@@ -2,7 +2,7 @@ package repository;
 
 import com.zaxxer.hikari.HikariDataSource;
 import entity.Todolist;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import util.DatabaseUtil;
