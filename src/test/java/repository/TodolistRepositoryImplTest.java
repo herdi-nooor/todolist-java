@@ -2,10 +2,12 @@ package repository;
 
 import com.zaxxer.hikari.HikariDataSource;
 import entity.Todolist;
-import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import util.DatabaseUtil;
+
+import java.sql.Timestamp;
 
 public class TodolistRepositoryImplTest {
 
@@ -20,8 +22,9 @@ public class TodolistRepositoryImplTest {
 
     @Test
     public void testAdd(){
+        Timestamp waktu = new Timestamp(System.currentTimeMillis());
         Todolist todo = new Todolist();
-        todo.setTodo("haaaaaa");
+        todo.setTodo(waktu + " : haaaaaa");
         System.out.println("isi todo: " + todo.getTodo());
 
         todolistRepository.add(todo);
