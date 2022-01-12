@@ -25,7 +25,7 @@ public class TodolistRepositoryImplTest {
                 Runtime.getRuntime().exec("clear");
             }
         } catch (final Exception e) {
-            //  Handle any exceptions.
+            System.out.println(e);
         }
     }
 
