@@ -3,9 +3,9 @@ package repository;
 import entity.Todolist;
 
 import javax.sql.DataSource;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
+import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class TodolistsRepositoryImpl implements TodolistRepository{
 
@@ -17,7 +17,6 @@ public class TodolistsRepositoryImpl implements TodolistRepository{
 
     @Override
     public void add(Todolist todolist) {
-        System.out.println("add : " + todolist.getTodo());
         String sql = "INSERT INTO todolist(todo) VALUES (?)";
         try (Connection cn = dataSource.getConnection()){
             try(PreparedStatement statement = cn.prepareStatement(sql)) {
@@ -31,49 +30,59 @@ public class TodolistsRepositoryImpl implements TodolistRepository{
 
     @Override
     public Todolist[] getAll() {
-        return data;
-    }
-    public boolean isFull(){
-        //        cek penuh atau tidak
-        var penuh = true;
-        for (int i = 0; i < data.length; i++){
-            if (data[i] == null){
-                penuh = false;
-                break;
+//        lebih baik nanti di ganti typedata method nya menjadi List<>.
+        String sql = "SELECT id, todo FROM todolist";
+        try (Connection cn = dataSource.getConnection();
+             Statement statement = cn.createStatement();
+             ResultSet result = statement.executeQuery(sql)){
+            List<Todolist> list = new ArrayList<>();
+            while (result.next()){
+                Todolist todolist = new Todolist();
+                todolist.setId(result.getInt("id"));
+                todolist.setTodo(result.getString("todo"));
+
+                list.add(todolist);
             }
-        }
-        return penuh;
-    }
-    public void resizeIfFull(){
-        //        jika data penuh
-        if(isFull()){
-            var temp = data;
-        //        melipat gandakan ukuran array dan memindahkan data
-            data = new Todolist[data.length + 10];
-            for (int i = 0; i < temp.length; i++){
-                data[i] = temp[i];
-            }
+
+            return list.toArray(new Todolist[0]);
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
         }
     }
 
+    private boolean isExists(Integer number){
+        String sql = "SELECT id FROM todolist WHERE id = ?";
+        try (Connection cn = dataSource.getConnection();
+             PreparedStatement statement = cn.prepareStatement(sql)) {
+                statement.setInt(1, number);
+
+                try (ResultSet result = statement.executeQuery()){
+                    if (result.next()){
+                        return true;
+                    }else {
+                        return false;
+                    }
+                }
+        }catch(SQLException e){
+            throw new RuntimeException(e);
+        }
+    }
     @Override
     public boolean remove(Integer number) {
-        number--;
-        if (number>= data.length){
-            System.out.println("\t----------------------------------------\n\t| index yang diberikan melebihi jumlah | \n\t| penampungan data yang ada \t\t   |\n\t----------------------------------------\n");
-            return false;
-        }else if (data[number] == null){
-            System.out.println("\t----------------------------\n\t|tidak ada data di index " + (number+1) + " |\n\t----------------------------\n");
-            return false;
-        }else{
-            for (int i = number; i < data.length; i++){
-                if (i == (data.length -1)){
-                    data[i] = null;
-                }else {
-                    data[i] = data[i + 1];
-                }
+        if (isExists(number)){
+            String sql = "DELETE FROM todolist WHERE id = ?";
+            try (Connection cn = dataSource.getConnection();
+                PreparedStatement statement = cn.prepareStatement(sql)) {
+                    statement.setInt(1, number);
+                    statement.executeUpdate();
+                    return true;
+            }catch(SQLException e){
+                throw new RuntimeException(e);
             }
-            return true;
+        }else {
+            return false;
         }
+
     }
 }
