@@ -14,6 +14,7 @@ public class TodoListView {
     public void showTodolist(){
         boolean ulang = true;
         while (ulang) {
+            cl();
             System.out.println("TODO LIST");
             todolistService.showTodoList();
             System.out.println("Menu : ");
@@ -54,6 +55,20 @@ public class TodoListView {
         if (index.equals("x")) {
         } else {
             todolistService.removeTodoList(Integer.valueOf(index));
+        }
+    }
+
+    public void cl(){
+//        tidak bekerja jika di dalam IDE.
+        try {
+            final String os = System.getProperty("os.name");
+            if (os.contains("Windows")) {
+                Runtime.getRuntime().exec("cls");
+            } else {
+                Runtime.getRuntime().exec("clear");
+            }
+        } catch (final Exception e) {
+            System.out.println(e);
         }
     }
 

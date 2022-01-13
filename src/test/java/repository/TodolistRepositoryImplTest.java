@@ -7,27 +7,12 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import util.DatabaseUtil;
 
-import java.io.IOException;
 import java.sql.Timestamp;
 
 public class TodolistRepositoryImplTest {
 
     private HikariDataSource dataSource;
     private TodolistRepository todolistRepository;
-
-    public void cl(){
-//        tidak bekerja jika di dalam IDE.
-        try {
-            final String os = System.getProperty("os.name");
-            if (os.contains("Windows")) {
-                Runtime.getRuntime().exec("cls");
-            } else {
-                Runtime.getRuntime().exec("clear");
-            }
-        } catch (final Exception e) {
-            System.out.println(e);
-        }
-    }
 
     @BeforeEach
     void setUp(){
@@ -45,23 +30,13 @@ public class TodolistRepositoryImplTest {
         todolistRepository.add(todo);
     }
 
-    @Test
-    void testRemove(){
-        System.out.println(todolistRepository.remove(12));
-        System.out.println(todolistRepository.remove(14));
-        System.out.println(todolistRepository.remove(15));
-        System.out.println(todolistRepository.remove(19));
-    }
-
-
-    @Test
-    void testGetAll() throws IOException {
-        Todolist[] todolists = todolistRepository.getAll();
-        for (var todo: todolists ) {
-            System.out.println(todo.getId()+" : "+todo.getTodo());
-        }
-//            cl();
-    }
+//    @Test
+//    void testGetAll(){
+//        Todolist[] todolists = todolistRepository.getAll();
+//        for (var todo: todolists ) {
+//            System.out.println(todo.getId()+" : "+todo.getTodo());
+//        }
+//    }
 
     @AfterEach
     void tearDown(){
