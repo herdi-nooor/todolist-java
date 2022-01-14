@@ -24,9 +24,7 @@ public class TodolistRepositoryImplTest {
     public void testAdd(){
         Timestamp waktu = new Timestamp(System.currentTimeMillis());
         Todolist todo = new Todolist();
-        todo.setTodo(waktu + " : haaaaaa");
-//        System.out.println("isi todo: " + todo.getTodo());
-
+        todo.setTodo(waktu + ": data ini ditambahkan ketika test jalan");
         todolistRepository.add(todo);
     }
 
