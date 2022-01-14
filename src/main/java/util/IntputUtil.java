@@ -12,4 +12,13 @@ public class IntputUtil {
         return data;
     }
 
+    public static boolean isString(String info){
+        String angka = "[\\p{Digit}&&[1234567890]]+";
+        if (info.matches(angka)){
+            return false;
+        }else {
+            return true;
+        }
+    }
+
 }

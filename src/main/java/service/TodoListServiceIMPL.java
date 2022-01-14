@@ -11,11 +11,10 @@ public class TodoListServiceIMPL implements TodolistService {
         this.todolistRepository = todolistRepository;
     }
 
+
     @Override
     public void showTodoList() {
-
         Todolist[] model = todolistRepository.getAll();
-//        System.console("clear");
         System.out.println("=====  TODO LIST =====");
         for (var todolist : model){
             System.out.println(todolist.getId()+". "+todolist.getTodo());
@@ -26,7 +25,7 @@ public class TodoListServiceIMPL implements TodolistService {
     public void addTodoList(String todo) {
         Todolist todolist = new Todolist(todo);
         todolistRepository.add(todolist);
-        System.out.println("SUKSES MENAMBAHKAN TODOLIST : " +  todo);
+        System.out.println("SUKSES MENAMBAHKAN TODOLIST");
     }
 
     @Override

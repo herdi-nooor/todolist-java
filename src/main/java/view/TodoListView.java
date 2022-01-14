@@ -14,14 +14,14 @@ public class TodoListView {
     public void showTodolist(){
         boolean ulang = true;
         while (ulang) {
-            cl();
+            System.out.print("\033[H\033[2J");
             System.out.println("TODO LIST");
             todolistService.showTodoList();
             System.out.println("Menu : ");
             System.out.println("\t( 1 )-> tambah");
             System.out.println("\t( 2 )-> hapus");
             System.out.println("\t( x )-> keluar");
-            var input = IntputUtil.input("Pilih");
+            var input = IntputUtil.input("Pilih  ");
             switch (input) {
                 case "1":
                     addTodolist();
@@ -34,6 +34,7 @@ public class TodoListView {
                     break;
                 default:
                     System.out.println(" pilihan tidak di mengwerti ");
+                    IntputUtil.input("\tenter untuk lanjut");
                     break;
             }
         }
@@ -43,33 +44,26 @@ public class TodoListView {
         var todo = IntputUtil.input("ketikan ( x ) untuk batal");
         if (todo.equals("x")){
             System.out.println("anda membatalkanya");
-            IntputUtil.input("enter untuk lanjut");
+            IntputUtil.input("\tenter untuk lanjut");
         }else{
             todolistService.addTodoList(todo);
+            IntputUtil.input("\tenter untuk lanjut");
         }
     }
     public void removeTodolist(){
         System.out.println("MENGHAPUS DATA");
-        var index = IntputUtil.input("masukan index data yang akan di hapus \n" +
-                "ketikan ( x ) untuk batal \n\t");
+        var index = IntputUtil.input("masukan index data yang akan di hapus \nketikan ( x ) untuk batal");
         if (index.equals("x")) {
-        } else {
+            System.out.println("anda membatalkanya");
+            IntputUtil.input("\tenter untuk lanjut");
+        } else if (IntputUtil.isString(index)) {
+            System.out.println("hanya input angka, janga yang lain");
+            IntputUtil.input("\n\tenter untuk lanjut");
+        }else{
             todolistService.removeTodoList(Integer.valueOf(index));
+            IntputUtil.input("\tenter untuk lanjut");
         }
     }
 
-    public void cl(){
-//        tidak bekerja jika di dalam IDE.
-        try {
-            final String os = System.getProperty("os.name");
-            if (os.contains("Windows")) {
-                Runtime.getRuntime().exec("cls");
-            } else {
-                Runtime.getRuntime().exec("clear");
-            }
-        } catch (final Exception e) {
-            System.out.println(e);
-        }
-    }
 
 }
